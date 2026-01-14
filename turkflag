@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from 'react';
+import { Moon, Star, Sword, History, BookOpen, Flag, Info, ChevronDown } from 'lucide-react';
+
+const App = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState('legend');
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const scrollToSection = (id) => {
+    setActiveSection(id);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 selection:bg-red-200">
+      {/* Hero Section with Flag Animation */}
+      <header className="relative bg-[#E30A17] text-white min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
+        <div className={`absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10`}></div>
+        
+        <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'} text-center z-10 px-4`}>
+          <div className="relative inline-block mb-8">
+            {/* Stylized Turkish Flag Representation */}
+            <div className="w-48 h-48 md:w-64 md:h-64 relative flex items-center justify-center">
+              <Moon className="w-full h-full text-white fill-white absolute -left-4 drop-shadow-2xl" strokeWidth={0} />
+              <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 translate-x-8 md:translate-x-12">
+                 <Star className="w-16 h-16 md:w-24 md:h-24 text-white fill-white drop-shadow-lg rotate-[35deg]" strokeWidth={0} />
+              </div>
+            </div>
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">Hilal ve Yıldız</h1>
+          <p className="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto">
+            Bir sembolün efsanesi, tarihi ve anlamı
+          </p>
+        </div>
+
+        <div className="absolute bottom-10 animate-bounce cursor-pointer" onClick={() => scrollToSection('legend')}>
+          <ChevronDown size={32} />
+        </div>
+      </header>
+
+      {/* Navigation (Sticky) */}
+      <nav className="sticky top-0 bg-white/90 backdrop-blur-md shadow-sm z-50 border-b border-slate-200 overflow-x-auto">
+        <div className="max-w-4xl mx-auto flex justify-around p-4 min-w-[350px]">
+          <NavButton id="legend" active={activeSection} onClick={scrollToSection} icon={<Sword size={18} />} label="Efsane" />
+          <NavButton id="history" active={activeSection} onClick={scrollToSection} icon={<History size={18} />} label="Tarih" />
+          <NavButton id="religion" active={activeSection} onClick={scrollToSection} icon={<BookOpen size={18} />} label="Din" />
+          <NavButton id="meaning" active={activeSection} onClick={scrollToSection} icon={<Flag size={18} />} label="Anlam" />
+        </div>
+      </nav>
+
+      <main className="max-w-4xl mx-auto p-6 md:p-12 space-y-24">
+        
+        {/* SECTION 1: EFSANE */}
+        <Section id="legend" title="Kan ve Gökyüzü Efsanesi" icon={<Sword className="text-[#E30A17]" size={32} />}>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="bg-red-50 p-8 rounded-2xl border-l-4 border-[#E30A17] shadow-sm">
+              <h3 className="text-xl font-bold text-[#E30A17] mb-4">Kosova Savaşı</h3>
+              <p className="leading-relaxed text-slate-700">
+                Zorlu ve kanlı bir savaşın ardından, gece gökyüzünde Ay doğar. 
+                Sultan savaş meydanını gezerken yerde biriken <strong>şehit kanlarından</strong> oluşmuş bir gölette korkunç ama ihtişamlı bir yansıma görür.
+              </p>
+            </div>
+            <div className="relative h-64 bg-slate-900 rounded-2xl overflow-hidden shadow-xl flex items-center justify-center group">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#E30A17]/80 to-transparent z-10"></div>
+              {/* Visualizing the reflection */}
+              <div className="absolute bottom-8 w-full flex justify-center items-center z-20 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                 <div className="flex items-center transform scale-75 rotate-12">
+                    <Moon className="w-32 h-32 text-red-200 fill-red-200 rotate-[-20deg]" />
+                    <Star className="w-12 h-12 text-red-100 fill-red-100 ml-[-20px] mb-[10px]" />
+                 </div>
+              </div>
+              <p className="absolute top-4 right-4 text-white/80 text-sm font-mono z-20">Yansıma</p>
+            </div>
+            <div className="md:col-span-2 text-center mt-4 text-slate-600 italic">
+              "Kırmızı renk kanı, Hilal ve Yıldız ise kandaki gökyüzü yansımasını temsil eder."
+            </div>
+          </div>
+        </Section>
+
+        {/* SECTION 2: TARİH */}
+        <Section id="history" title="Tarihsel Gerçek" icon={<History className="text-[#E30A17]" size={32} />}>
+          <p className="text-lg text-slate-600 mb-8">
+            Bu sembol Osmanlılar tarafından icat edilmedi, <strong>miras alındı</strong>. İki büyük kökeni vardır:
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card 
+              title="Bizans Mirası" 
+              subtitle="Eski İstanbul"
+              content="Türkler gelmeden çok önce, hilal Konstantinopolis'in sembolüydü. Efsaneye göre MÖ 340'ta Ay ışığı, şehre gizlice saldıran düşmanları ortaya çıkararak şehri kurtardı. Halk bunu Tanrıça Artemis'in bir işareti saydı."
+              icon="🏛️"
+            />
+            <Card 
+              title="Orta Asya Kökleri" 
+              subtitle="Eski Türkler"
+              content="Türk boyları İslam'ı kabul etmeden önce de Gök Tanrı'ya (Tengri) inanır, Güneş ve Ay'a saygı duyarlardı. Bu yüzden 1453'te İstanbul fethedildiğinde, bu sembol onlara zaten tanıdık ve kutsal geliyordu."
+              icon="🏹"
+            />
+          </div>
+        </Section>
+
+        {/* SECTION 3: DİN */}
+        <Section id="religion" title="İslam'ın Sembolü Oluşu" icon={<BookOpen className="text-[#E30A17]" size={32} />}>
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+            <div className="p-8">
+              <div className="flex items-start gap-4">
+                <div className="bg-green-100 p-3 rounded-full text-green-700 mt-1">
+                  <Info size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg mb-2">Başlangıçta Yoktu</h4>
+                  <p className="text-slate-600 mb-6">
+                    Hz. Muhammed döneminde İslam'ın özel bir sembolü yoktu. Bayraklar genellikle tek renkti (siyah, beyaz veya yeşil).
+                  </p>
+                </div>
+              </div>
+              
+              <hr className="border-slate-100 my-4"/>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-red-100 p-3 rounded-full text-[#E30A17] mt-1">
+                  <Flag size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg mb-2">Osmanlı Etkisi</h4>
+                  <p className="text-slate-600">
+                    Osmanlı İmparatorluğu yüzyıllarca İslam dünyasının lideri ve "yüzü" oldu. Avrupalılar hilalli Osmanlı bayrağını gördükçe, bunu tüm İslam inancıyla özdeşleştirdiler. Daha sonra Pakistan ve Tunus gibi ülkeler de bu mirası benimsedi.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* SECTION 4: ANLAM */}
+        <Section id="meaning" title="Bugünkü Anlamı" icon={<Star className="text-[#E30A17]" size={32} />}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <MeaningCard 
+              icon={<Moon size={48} className="text-[#E30A17]" />}
+              title="Hilal (Ay)"
+              points={[
+                "İslam Takvimi (Hicri takvim Ay takvimidir)",
+                "Bağımsızlık sembolü",
+                "Yenilenme ve değişim"
+              ]}
+            />
+            <MeaningCard 
+              icon={<Star size={48} className="text-[#E30A17] fill-[#E30A17]" />}
+              title="Yıldız"
+              points={[
+                "İslam'ın Beş Şartı (5 köşe)",
+                "Şehitlerin ruhu",
+                "Umut ve ışık"
+              ]}
+            />
+          </div>
+          
+          <div className="mt-12 p-6 bg-slate-100 rounded-xl text-center text-slate-500 text-sm">
+            Not: Farklı ülkelerin bayraklarında hilalin yönü ve kalınlığı, o coğrafyadaki Ay'ın görünümüne göre değişebilir.
+          </div>
+        </Section>
+
+      </main>
+
+      <footer className="bg-slate-900 text-slate-400 py-12 text-center">
+        <div className="flex justify-center items-center gap-2 mb-4">
+          <Moon size={20} />
+          <Star size={16} className="mt-1" />
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+// Sub-components for cleaner code
+const NavButton = ({ id, active, onClick, icon, label }) => (
+  <button 
+    onClick={() => onClick(id)}
+    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium ${
+      active === id 
+        ? 'bg-[#E30A17] text-white shadow-md transform scale-105' 
+        : 'text-slate-500 hover:bg-slate-100'
+    }`}
+  >
+    {icon}
+    <span>{label}</span>
+  </button>
+);
+
+const Section = ({ id, title, icon, children }) => (
+  <section id={id} className="scroll-mt-24 transition-opacity duration-700">
+    <div className="flex items-center gap-4 mb-8">
+      {icon}
+      <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+    </div>
+    {children}
+  </section>
+);
+
+const Card = ({ title, subtitle, content, icon }) => (
+  <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-shadow border border-slate-100">
+    <div className="text-4xl mb-4">{icon}</div>
+    <h3 className="text-xl font-bold text-slate-800">{title}</h3>
+    <span className="text-sm font-semibold text-[#E30A17] uppercase tracking-wider block mb-3">{subtitle}</span>
+    <p className="text-slate-600 text-sm leading-relaxed">{content}</p>
+  </div>
+);
+
+const MeaningCard = ({ icon, title, points }) => (
+  <div className="flex flex-col items-center text-center p-8 bg-white rounded-2xl border-2 border-dashed border-red-100 hover:border-[#E30A17] transition-colors">
+    <div className="mb-6 transform hover:scale-110 transition-transform duration-300">
+      {icon}
+    </div>
+    <h3 className="text-2xl font-bold mb-6 text-slate-800">{title}</h3>
+    <ul className="space-y-3 text-left w-full max-w-xs">
+      {points.map((point, idx) => (
+        <li key={idx} className="flex items-center gap-3 text-slate-600">
+          <span className="w-2 h-2 bg-[#E30A17] rounded-full"></span>
+          {point}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+export default App;
